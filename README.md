@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FirstEye — On-device Person Detection (VIZ)
 
 **FirstEye** (VIZ) is a lightweight, privacy-first on-device person detection project.
@@ -41,3 +42,24 @@ Contributions welcome — open an issue or PR. See `CONTRIBUTING.md` (optional).
 
 ## Contact
 Your Name — [GitHub profile link] — contact email
+=======
+# FirstEye
+
+```
+.
+├── dataset/       # Scripts for on-device image capture using Nicla Vision + push button
+├── model/               # Dataset references, class info, and augmentation notes
+├── deployment/
+│   └── ArduinoNiclaVision-Cortex-M7/            # MicroPython/OpenMV deployment script and model file for on-device inference & alerts
+│   └── RPi-Cortex-A76/            # MicroPython/OpenMV deployment script and model file for on-device inference & alerts
+│   └── Mobile-ARM Cortex-X4/            # MicroPython/OpenMV deployment script and model file for on-device inference & alerts
+├── images/                # Photos of the prototype and example detection outputs
+└── README.md              # Project overview and documentation (this file)
+```
+
+
+COMPRESSION TYPE | INFERENCE TIME
+TF Lite	| 20ms
+CMSIS-NN | 15ms
+
+>>>>>>> f4f7573f09ee457374d38204d937d1bd228508f1
