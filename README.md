@@ -11,3 +11,9 @@
 ├── images/                # Photos of the prototype and example detection outputs
 └── README.md              # Project overview and documentation (this file)
 ```
+
+
+COMPRESSION TYPE | INFERENCE TIME
+TF Lite	| 20ms
+CMSIS-NN | 15ms
+
