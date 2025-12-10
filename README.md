@@ -13,9 +13,9 @@ This project showcases how a single, small-footprint ML model can be optimized a
 ---
 
 ## Quick links
-- Android guide → `android/README.md`
-- Nicla Vision guide → `nicla_vision/README.md`
-- Raspberry Pi 5 guide → `raspberrypi/README.md`
+- Nicla Vision guide → `deployment/Arduino_Nicla_Vision-Cortex-M7/README.md`
+- Raspberry Pi 5 guide → `deployment/RaspberryPi-Cortex-A76/README.md`
+- Android guide → `deployment/Mobile-ARM-Cortex-A72/README.md`
 - Model description → `model_card.md`
 
 ---
