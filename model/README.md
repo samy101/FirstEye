@@ -1,87 +1,173 @@
-# 🚀 **Model-Centric Track**
+# 🧠 FirstEye — Model Development
+**ARM AI Developer Challenge: Edge Model Optimization Track**
 
-Welcome to the **Model-Centric Track** of the **Wake Vision Challenge**! 🎉
+Welcome to the Model Development component of FirstEye, an AI system designed for ultra-efficient person presence detection across three Arm-powered platforms:
+- 📱 Android (Cortex-A720)
+- 🍓 Raspberry Pi 5 (Cortex-A76)
+- 🎯 Arduino Nicla Vision (Cortex-M7 Microcontroller)
 
-This track challenges you to **push the boundaries of tiny computer vision** by designing innovative model architectures for the newly released [Wake Vision Dataset](https://wakevision.ai/).
-
-🔗 **Learn More**: [Wake Vision Challenge Details](https://edgeai.modelnova.ai/challenges/details/1)
-
----
-
-## 🌟 **Challenge Overview**
-
-Participants are invited to:
-
-1. **Design novel model architectures** to achieve high accuracy.
-2. Optimize for **resource efficiency** (e.g., memory, inference time).
-3. Evaluate models on the **public test set** of the Wake Vision dataset.
-
-You can modify the **model architecture** freely, but the **dataset must remain unchanged**. 🛠️
+This directory contains everything related to the design, training, optimization, and evaluation of the FirstEye model.
 
 ---
 
-## 🛠️ **Getting Started**
+## 🚀 Overview
 
-### Step 1: Install Docker Engine 🐋
+The ARM hackathon focuses on building performant, deployable AI models for Arm-based devices, emphasizing:
+- Small memory footprint
+- Low latency
+- Energy-efficient inference
+- Portability across heterogeneous Arm hardware
 
-First, install Docker on your machine:
-- [Install Docker Engine](https://docs.docker.com/engine/install/).
+To achieve this, we designed a compact CNN model with:
+⭐ Input resolution: 80 × 80 RGB
+⭐ Output: 2 classes → `Person`, `No Person`
+⭐ Format: Fully quantized TFLite (uint8)
+⭐ Size: ~90 KB
+⭐ Hardware-friendly ops: Conv2D, DepthwiseConv, ReLU, AvgPool
 
----
+This model has been successfully deployed on:
+- Android phone (real-time inference using CameraX + TFLite)
+- Arduino Nicla Vision (OpenMV ML Engine + TensorFlow Lite Micro)
+- Raspberry Pi 5 (TFLite Runtime + libcamera streaming)
 
-### 💻 **Running Without a GPU**
+This demonstrates the model’s true cross-platform edge deployment capability, which is a core judging criterion of this hackathon.
 
-Run the following command inside the directory where you cloned this repository:
+## 🧩 Model Architecture Summary
+The architecture is based on principles of:
+- Depthwise separable convolutions
+- Early feature extraction
+- Aggressive spatial downsampling
+- Minimal parameter count
+- Quantization-aware training
 
-```bash
-sudo docker run -it --rm -v $PWD:/tmp -w /tmp andregara/wake_vision_challenge:cpu python model_centric_track.py
+The model training script:
+```
+model_centric_track_small.py
 ```
 
-- This trains the [ColabNAS model](https://github.com/harvard-edge/Wake_Vision/blob/main/experiments/comprehensive_model_architecture_experiments/wake_vision_quality/k_8_c_5.py), a state-of-the-art person detection model, on the Wake Vision dataset.
-- Modify the `model_centric_track.py` script to propose your own architecture.
+implements the full training pipeline:
+- Data preprocessing
+- Model definition
+- Training loop
+- Evaluation
+- Export to SavedModel and TFLite
+- Post-training quantization
 
-💡 **Note**: The first execution may take several hours as it downloads the full dataset (~365 GB).
-
----
-
-### ⚡ **Running With a GPU**
-
-1. Install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
-2. Verify your [GPU drivers](https://ubuntu.com/server/docs/nvidia-drivers-installation).
-
-Run the following command inside the directory where you cloned this repository:
-
-```bash
-sudo docker run --gpus all -it --rm -v $PWD:/tmp -w /tmp andregara/wake_vision_challenge:gpu python model_centric_track.py
+Final exported model:
+```
+wv_k_8_c_5_80_small.tflite
 ```
 
-- This trains the [ColabNAS model](https://github.com/harvard-edge/Wake_Vision/blob/main/experiments/comprehensive_model_architecture_experiments/wake_vision_quality/k_8_c_5.py) on the Wake Vision dataset.
-- Modify the `model_centric_track.py` script to design your own model architecture.
+## 🎯 Why This Model is Ideal for ARM Edge Devices
 
-💡 **Note**: The first execution may take several hours as it downloads the full dataset (~365 GB).
+| Platform                 | Reason It Works                                                     |
+| ------------------------ | ------------------------------------------------------------------- |
+| **Android (A720)**       | Exploits TFLite NNAPI acceleration, <1ms overhead per frame.        |
+| **Raspberry Pi 5 (A76)** | Optimized for CPU-only inference at 50–80 FPS using TFLite Runtime. |
+| **Nicla Vision (M7)**    | Fits inside RAM, uses CMSIS-NN via OpenMV, ~15 FPS sustained.       |
 
----
+This cross-platform operability is intentional and aligns with hackathon categories around:
+- Model portability
+- Efficient inference on constrained hardware
+- Real-world deployability
 
-## 🎯 **Tips for Success**
+## 📦 Structure of This Directory
+```
+model/
+│   README.md                 ← this file
+│   Metrics.xlsx              ← accuracy & inference benchmarks
+│   TechnicalReport.md        ← full architecture description
+│   model_centric_track_small.py
+│   wv_k_8_c_5_80_small.tflite ← final deployed model
+│
+├── wv_k_8_c_5/
+│   ├── *.tflite
+│   ├── *.pb
+│   └── variables/
+│
+└── wv_k_8_c_5_80_small.tf/
+    ├── saved_model.pb
+    ├── fingerprint.pb
+    └── variables/
+```
 
-- **Focus on Model Innovation**: Experiment with architecture design, layer configurations, and optimization techniques.
-- **Stay Efficient**: Resource usage is critical—consider model size, inference time, and memory usage.
-- **Collaborate**: Join the community discussions on [Discord](https://discord.com/channels/803180012572114964/1323721491736432640) to exchange ideas and insights!
+## 🛠️ Training the Model
 
----
+Training is optional for users of FirstEye; the repo already includes the final `.tflite` model.
 
-## 📚 **Resources**
+But if you want to reproduce, retrain, or modify the model:
 
-- [ColabNAS Model Documentation](https://github.com/AndreaMattiaGaravagno/ColabNAS)
-- [Docker Documentation](https://docs.docker.com/)
-- [Wake Vision Dataset](https://wakevision.ai/)
+#### 1️⃣ Install Docker
 
----
+Follow: https://docs.docker.com/engine/install/
 
-## 📞 **Contact Us**
+#### 2️⃣ CPU Training (simplest)
+```
+sudo docker run -it --rm \
+  -v $PWD:/workspace -w /workspace \
+  tensorflow/tensorflow:latest \
+  python model_centric_track_small.py
+```
 
-Have questions or need help? Reach out on [Discord](https://discord.com/channels/803180012572114964/1323721491736432640).
+#### 3️⃣ GPU Training (if CUDA is available)
+```
+sudo docker run --gpus all -it --rm \
+  -v $PWD:/workspace -w /workspace \
+  tensorflow/tensorflow:latest-gpu \
+  python model_centric_track_small.py
+```
 
----
+Outputs will appear in:
+```
+wv_k_8_c_5_80_small.tf/
+wv_k_8_c_5_80_small.tflite
+```
 
-🌟 **Happy Innovating and Good Luck!** 🌟
+## 📊 Evaluation & Metrics
+
+The file Metrics.xlsx includes:
+- Accuracy on held-out validation set
+- Confusion matrix
+- TFLite inference time on:
+  - Nicla Vision (Cortex-M7)
+  - Raspberry Pi 5 (Cortex-A76)
+  - Android (A720 phone)
+
+Our model demonstrates strong performance while staying extremely small.
+
+## 🔗 Integration With Deployment Targets
+
+The model from this folder is used directly in:
+
+| Platform           | Path                                         | Link                                                                           |
+| ------------------ | -------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Android**        | `deployment/Mobile-ARM-Cortex-A720/app`      | → [Android Deployment Guide](../deployment/Mobile-ARM-Cortex-A720/README.md)   |
+| **Nicla Vision**   | `deployment/Arduino_Nicla_Vision-Cortex-M7/` | → [Nicla Vision Guide](../deployment/Arduino_Nicla_Vision-Cortex-M7/README.md) |
+| **Raspberry Pi 5** | `deployment/RaspberryPi-Cortex-A76/`         | → [Raspberry Pi 5 Guide](../deployment/RaspberryPi-Cortex-A76/README.md)       |
+
+
+The same model file runs unchanged on all three devices — a core demonstration of Arm-based cross-platform ML deployment.
+
+## 🤝 Contributions & Extensions
+You may extend this model by:
+- Adding MobileNetV3-style inverted residual blocks
+- Pruning channels for even smaller memory footprint
+- Trying int4 or mixed-precision quantization
+- Adding post-processing (temporal smoothing, motion detection, etc.)
+Pull requests (PRs) are welcome.
+
+## 📬 Support
+
+If you need help with model training or deployment:
+→ Open an issue in the repository.
+→ Or contact via GitHub Discussions.
+
+## 🌟 Final Note
+
+This model is the heart of FirstEye — a tiny, fast, cross-device person detector built specifically for Arm CPUs and microcontrollers.
+It showcases:
+- ML model design
+- Hardware-aware optimization
+- Real-world deployment engineering
+
+All of which are key in the Arm AI Developer Challenge.
