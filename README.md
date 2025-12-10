@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # FirstEye — On-device Person Detection (VIZ)
 
 **FirstEye** (VIZ) is a lightweight, privacy-first on-device person detection project.
@@ -42,7 +41,6 @@ Contributions welcome — open an issue or PR. See `CONTRIBUTING.md` (optional).
 
 ## Contact
 Your Name — [GitHub profile link] — contact email
-=======
 # FirstEye
 
 ```
@@ -62,4 +60,3 @@ COMPRESSION TYPE | INFERENCE TIME
 TF Lite	| 20ms
 CMSIS-NN | 15ms
 
->>>>>>> f4f7573f09ee457374d38204d937d1bd228508f1
